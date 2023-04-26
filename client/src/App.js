@@ -1,25 +1,27 @@
 import styled from "styled-components";
-import Header from "./components/Banner/Header";
-import ProfComponent from "./components/Banner/ProfComponent";
-import Footer from "./components/Footer/Footer";
-import Projects from "./components/Projects/Projects";
-import Services from "./components/Service/Services";
+
+
+// import Services from "./components/Service/Services";
+// import Projects from "./components/Projects/Projects";
+
+import { Route, Routes } from "react-router-dom";
+import Home from "./components/Home/Home";
 function App() {
   return (
+    //  
+    
     <Container>
       <Banner>
-        <Header />
-        <ProfComponent />
+      <Routes>
+      <Route exact path="/home" element={<Home />} />
+      {/* <Route exact path="/projects" element={<Projects />} />
+      <Route exact path="/services" element={<Services />} /> */}
+        
+      </Routes>
       </Banner>
-      <Services />
-      <LightColor>
-        <Projects />
-      </LightColor>
-      <LightColor>
-        <Footer />
-      </LightColor>
     </Container>
-  );
+    
+     );      
 }
 
 export default App;
@@ -34,6 +36,6 @@ const Banner = styled.div`
   }
 `;
 
-const LightColor = styled.div`
-  background: linear-gradient(159deg, rgb(45, 45, 58) 0%, rgb(43, 43, 53) 100%);
-`;
+// const LightColor = styled.div`
+//   background: linear-gradient(159deg, rgb(45, 45, 58) 0%, rgb(43, 43, 53) 100%);
+// `;

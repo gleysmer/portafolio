@@ -11,7 +11,7 @@ const { DataTypes } = require('sequelize');
       primaryKey: true,
       autoIncrement: true
     },
-    name: {
+    message: {
       type: DataTypes.STRING,
       allowNull: true
     },

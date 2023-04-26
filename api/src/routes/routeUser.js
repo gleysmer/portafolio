@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { User } = require("../db.js");
+const { User, Request } = require("../db.js");
 const jwt = require("jsonwebtoken");
 const router = Router();
 const bcrypt = require("bcryptjs");
@@ -20,7 +20,11 @@ router.get("/", async (req, res) => {
     const { email, name } = req.query;
   
     try {
-      const users = await User.findAll();
+      const users = await User.findAll({
+        include: {
+          model: Request
+        },
+      });
       if (name) {
         let result = users.filter((e) =>
           e.name.toLowerCase().includes(name.toLowerCase())
@@ -30,6 +34,9 @@ router.get("/", async (req, res) => {
           : res.status(404).send("name not found");
       } else if (email) {
         const users = await User.findAll({
+          include: {
+            model: Request
+          },
           where: {
             email: {
               [Op.like]: `${email}%`,
@@ -40,7 +47,13 @@ router.get("/", async (req, res) => {
           ? res.status(200).send(users)
           : res.status(400).send(`User ${email} not found`);
       } else {
-        const users = await User.findAll();
+        const users = await User.findAll({
+          include: {
+            model: Request
+          },
+        }
+         
+        );
         res.status(200).send(users);
       }
     } catch (error) {
@@ -50,7 +63,7 @@ router.get("/", async (req, res) => {
 
   router.post("/", async (req, res, next) => {
     try {
-      const { name, password, email, image } = req.body;
+      const { name, password, email, image  } = req.body;
   
       const validate = await User.findOne({
         where: {
@@ -64,23 +77,15 @@ router.get("/", async (req, res) => {
           .send({ message: "User or Email already registered" });
       }
   
-    //   let lastUserId = await User.findOne({
-    //     order: [["createdAt", "DESC"]], // Ordena por la fecha de creación de manera descendente para obtener el último usuario creado
-    //   });
-    //   let lastId;
-    //   if(lastUserId){ 
-    //    lastId = lastUserId.id + 1;
-    //   }else{ 
-    //     lastId = 1
-    //   }
-      // console.log("lastUserId es: ", lastUserId)
+    
       const newUser = await User.create({
-        // id: lastId,
+       
         name,
         password: bcrypt.hashSync(password, 8),
         email,
         image,
       });
+
   
       if (!newUser) {
         return res.status(500).json({ error: "Failed to create user" });
@@ -189,6 +194,36 @@ router.post("/login", async (req, res) => {
       // Generar y enviar token de autenticación al cliente
   
       res.json({ message: "Your password has been successfully changed." });
+    } catch (err) {
+      console.error(err);
+      res
+        .status(500)
+        .json({ message: "Ocurrió un error al procesar su solicitud." });
+    }
+  });
+
+  router.post("/request", async (req, res) => {
+    const { email, name, message } = req.body;
+  
+    try {
+      const user = await User.findOne({ where: { email: email, name: name } });
+  
+      if (!user) {
+        return res
+          .status(404)
+          .json({ message: "Not user found with that email." });
+      }
+      else{
+        const solicitud= await Request.create({
+            message
+        })
+
+        await solicitud.setUser(user)
+        res.status(200).json({ message: "solicitud guardada"})
+      }
+     
+  
+      
     } catch (err) {
       console.error(err);
       res

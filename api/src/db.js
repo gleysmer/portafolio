@@ -33,8 +33,9 @@ sequelize.models = Object.fromEntries(capsEntries);
 const { User, Request } = sequelize.models;
 
 // Aca vendrian las relaciones
-Request.hasMany(User)
-User.belongsTo(Request)
+
+User.hasMany(Request)
+Request.belongsTo(User)
 
 
 
