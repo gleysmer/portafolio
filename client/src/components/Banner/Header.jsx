@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components';
 import { GiCandleFlame } from "react-icons/gi";
 
+
 import { Link } from 'react-router-dom';
 
 const Header = () => {
@@ -11,14 +12,15 @@ const Header = () => {
         <Logo>
             <span className='green'><GiCandleFlame/></span>
             <h1>Portfolio</h1>
+          
         </Logo>
         <Nav bar={bar}>
             <span><a href="#home">Home</a></span>
             <span><a href="#service">Services</a></span>
             <span><a href="#project">Projects</a></span>
             <span><a href="#footer">requests</a></span>
-              
-            <Link to={'/'}>hola</Link>
+            <span><Link to={'/'}>login</Link> </span>
+            
             
         </Nav>
         <div

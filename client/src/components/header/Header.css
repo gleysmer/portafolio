@@ -1,0 +1,46 @@
+.cont-header{
+    display: flex;
+    justify-content:space-between;
+    align-items: flex-end;
+    background-color: darkgrey;
+    width: 98%;
+    height: 80px;
+    
+}
+.title{
+    font-family: 'Anton', sans-serif;
+    font-size: 30px;
+    color: black;
+    margin-left: 30px;
+    padding: 20px;
+}
+.div-button{
+    display: flex;
+    margin-right: 70px;
+}
+.port{
+    display: flex;
+    flex-direction: row;
+}
+.bs{
+    margin-top: 35px;
+    color: black;
+}
+.button-inicio{
+   
+ font-weight: bold;
+    font-size: 20px;
+    color: black;
+    text-decoration: none;
+    padding: 20px;
+}
+
+.register{
+ 
+   font-weight: bold;
+    font-size: 20px;
+    color: black;
+    text-decoration: none;
+    margin-left: 50px;
+    padding: 20px;
+}
