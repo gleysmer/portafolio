@@ -11,19 +11,23 @@ import country from '../../img/paises.png';
 let data = [
     {
         img :`${image}`,
-        disc : "A digital video game store for different consoles "
+        disc : "A digital video game store for different consoles ",
+        link:<a href="/">Link</a>
     },
     {
         img : `${phone}`,
-        disc : "This is an application for cell phone sales"
+        disc : "This is an application for cell phone sales",
+        link:<a href="/">Link</a>
     },
     {
         img :`${country}`,
-        disc : "Web application of countries where you can view their activities, filter them and create them by seasons "
+        disc : "Web application of countries where you can view their activities, filter them and create them by seasons ",
+        link:<a href="/">Link</a>
     },
     {
         img : `${food}`,
-        disc : "Web application where you can search for food recipes and filter them, you can also create a recipe"
+        disc : "Web application where you can search for food recipes and filter them, you can also create a recipe",
+        link:<a href="/">Link</a>
     },
    
 ];

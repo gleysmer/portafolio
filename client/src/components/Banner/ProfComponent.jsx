@@ -20,7 +20,7 @@ const ProfComponent = () => {
            development, from frontend to backend. This includes skills in programming languages,
             frameworks, databases, servers, and everything related to creating web applications.
           </p>
-          <button>Let's talk</button>
+         
           <Social>
             <p>Check out my</p>
             <div className="social-icons">

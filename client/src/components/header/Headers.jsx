@@ -1,28 +1,28 @@
 import { Link } from "react-router-dom";
 import { BsFillBagFill } from "react-icons/bs";
-import './Header.css'
+import styles from './Header.module.css';
 export default function Headers() {
   return (
-    <div className="cont-header">
-      <div className="port">
+    <div className={styles.cont_header}>
+      <div className={styles.port}>
         <div>
-        <h3 className="title">Portfolio</h3>
+        <h3 className={styles.title}>Portfolio</h3>
         </div>
-        <div className="bs">
+        <div className={styles.bs}>
         <BsFillBagFill />
         </div>
       </div>
-      <div className="div-button">
+      <div className={styles.div_button}>
       <div>
         <Link to='/home'>
-          <button className="button-inicio" href="">
+          <button className={styles.button_inicio} href="">
             Continue
         </button>
         </Link>
         </div>
         <div>
         <Link to='/register'>
-          <button className="register">Register</button>
+          <button className={styles.register}>Register</button>
         </Link>
       </div>
       </div>

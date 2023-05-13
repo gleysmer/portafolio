@@ -12,7 +12,7 @@
   font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
- .form-conte{
+ .form_conte{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -28,11 +28,11 @@
     border-radius: 15px;
     
  }
- .div-pass {
+ .div_pass {
   margin-top: 10px;
   margin-bottom: 10px;
  }
- .div-email {
+ .div_email {
   margin-bottom: 10px;
  }
 .label {
@@ -72,7 +72,7 @@
 
 }
 
-.btn-login {
+.btn_login {
   color: black;
   margin-top: 20px;
   background-color: darkslategrey ;
@@ -81,14 +81,20 @@
   padding: 8px;
   border-radius: 5px;
 }
-.btn-login{
+.btn_login{
   box-shadow: 5px 5px 4px  #888888;
 }
-.btn-login:hover {
+.btn_login:hover {
   background-color: gray;
   cursor: pointer;
 }
-
+.error{
+  color: red;
+  margin-top: 20px;
+}
+.divv{
+  margin-top: 40px;
+}
 .registro{
   color: black;
   padding: 10px;
@@ -108,7 +114,7 @@
 }
 
 
-.conte-comple{
+.conte_comple{
   display: flex;
   flex-direction: row;
   justify-content: center;

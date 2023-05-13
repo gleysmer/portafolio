@@ -1,28 +1,50 @@
 import styled from "styled-components";
-
-
-// import Services from "./components/Service/Services";
-// import Projects from "./components/Projects/Projects";
+import PasswordReset from "./components/ActPassword/PasswordReset";
+import Reset from "./components/ActPassword/Reset";
 
 import { Route, Routes } from "react-router-dom";
 import Home from "./components/Home/Home";
+import Login from "./components/Login/Login";
+import FormRegister from "./components/FormRegister/FormRegister";
+import Dashboard from "./components/Dashboard/Dashboard";
+import RutePrivate from "./components/Dashboard/RutePrivate";
+
+
 function App() {
-  return (
+
+  
+  // console.log('userrrrrr', user)
+  
+  
+  const datos = window.localStorage.getItem("user-log");
+        const Value = JSON.parse(datos)?.data_user;
+  
+
+    return (
     //  
+   
     
     <Container>
       <Banner>
-      <Routes>
-      <Route exact path="/home" element={<Home />} />
-      {/* <Route exact path="/projects" element={<Projects />} />
-      <Route exact path="/services" element={<Services />} /> */}
         
+      <Routes>
+
+      <Route exact path="/" element={<Login />} />
+      <Route exact path="/home" element={<Home />} />
+      <Route path="/passwordReset" element={<PasswordReset />} />
+      <Route path="/reset" element={<Reset />} />
+      <Route exact path="/register" element={<FormRegister />} />
+      {/* <Route exact path="/dashboard" element={ <Dashboard /> } /> */}
+   
+      <Route element={ <RutePrivate />}>
+        <Route exact path="/dashboard" element={ <Dashboard /> } />
+      </Route>
+    
       </Routes>
       </Banner>
     </Container>
     
-     );      
-}
+     )}
 
 export default App;
 

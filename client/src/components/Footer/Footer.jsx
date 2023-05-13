@@ -9,12 +9,16 @@ import { FiMail, FiPhoneCall } from "react-icons/fi";
 import { Slide, Zoom, Fade } from "react-awesome-reveal";
 
 
+
 const Footer = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+
+
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,6 +42,7 @@ const Footer = () => {
         throw new Error(data.message || "Something went wrong");
       }
 
+
       setName("");
       setEmail("");
       setMessage("");
@@ -55,6 +60,7 @@ const Footer = () => {
     });
   };
 
+  
   return (
     <Container id="footer">
       <Profile>
@@ -121,7 +127,41 @@ const Footer = () => {
           </ArrowUp>
         </Fade>
       </Profile>
+
       <Form>
+        <Slide direction="right">
+          <form  action="https://formsubmit.co/gleismerco13@gmail.com" method="POST">
+            <div className="name">
+              <span>
+                <CgProfile />
+              </span>
+              <input type="text" placeholder="Fullname..." />
+            </div>
+            <div className="email">
+              <span>
+                <MdAlternateEmail />
+              </span>
+              <input
+                placeholder="Ingresa Tu Email.."
+                type="email"
+                name="email"
+                id=""
+                required
+              />
+            </div>
+            <div className="message">
+              <span className="messageIcon">
+                <FiMail />
+              </span>
+              <textarea required name="text" cols="30" rows="10" placeholder="Escribe Aqui...."></textarea>
+            </div>
+            <button>Submit</button>
+          </form>
+        </Slide>
+   </Form>
+
+
+      {/* <Form>
         <Slide direction="right">
           <form onSubmit={handleSubmit}>
             <div className="name">
@@ -129,6 +169,7 @@ const Footer = () => {
                 <CgProfile />
               </span>
               <input
+              name="name"
                 type="text"
                 placeholder="Fullname..."
                 value={name}
@@ -140,6 +181,7 @@ const Footer = () => {
                 <MdAlternateEmail />
               </span>
               <input
+              name="email"
                 type="email"
                 placeholder="Email..."
                 value={email}
@@ -151,6 +193,7 @@ const Footer = () => {
                 <FiMail />
               </span>
               <textarea
+              name="message"
                 cols="30"
                 rows="10"
                 placeholder="Message..."
@@ -161,9 +204,9 @@ const Footer = () => {
             {error && <div className="error">{error}</div>}
             {success && <div className="success">Message sent!</div>}
             <button type="submit">Submit</button>
-          </form>
-        </Slide>
-      </Form>
+          </form> */}
+        {/* </Slide>
+      </Form> */}
     </Container>
   );
 };

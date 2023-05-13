@@ -5,16 +5,33 @@ const router = Router();
 const bcrypt = require("bcryptjs");
 const { Op } = require("sequelize");
 const { generateToken } = require("../util/generateToken.js");
-const nodemailer = require("nodemailer");
+// const nodemailer = require("nodemailer");
 
+
+const nodemailer = require("nodemailer");
+const URI = "http://localhost:3001/user";
 
 const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.EMAIL_PORTA,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
+  service: "hotmail",
+  auth: {
+    user: process.env.EMAIL_PHONEZONE,
+    pass: process.env.EMAIL_PHONEZONE_AUTHENTICATION,
+  },
+});
+// const transporter = nodemailer.createTransport({
+//   host: "smtp.live.com",
+//   port: 587,
+//   secure: false,
+//   auth: {
+//     user: process.env.EMAIL_PHONEZONE,
+//     pass: process.env.EMAIL_PHONEZONE_AUTHENTICATION,
+//   },
+//   tls: {
+//     ciphers: "SSLv3",
+//     rejectUnauthorized: false,
+//   },
+//   connectionTimeout: 5000
+// });
 
 router.get("/", async (req, res) => {
     const { email, name } = req.query;
@@ -63,7 +80,7 @@ router.get("/", async (req, res) => {
 
   router.post("/", async (req, res, next) => {
     try {
-      const { name, password, email, image  } = req.body;
+      const { name, password, email } = req.body;
   
       const validate = await User.findOne({
         where: {
@@ -82,8 +99,7 @@ router.get("/", async (req, res) => {
        
         name,
         password: bcrypt.hashSync(password, 8),
-        email,
-        image,
+        email
       });
 
   
@@ -152,7 +168,7 @@ router.post("/login", async (req, res) => {
       user.resetPasswordCode = confirmationCode;
       await user.save();
       const mailOptions = {
-        from: "phonezonestoreapp@gmail.com",
+        from: "gleismerco13@hotmail.com",
         to: user.email,
         subject: "Cambio de contraseña",
         text: `Su código de confirmación es: ${confirmationCode}`,
@@ -209,28 +225,78 @@ router.post("/login", async (req, res) => {
       const user = await User.findOne({ where: { email: email, name: name } });
   
       if (!user) {
-        return res
-          .status(404)
-          .json({ message: "Not user found with that email." });
+        return res.status(404).json({ message: "Not user found with that email." });
       }
-      else{
-        const solicitud= await Request.create({
-            message
-        })
+      else {
+        const solicitud = await Request.create({ message });
+        await solicitud.setUser(user);
+        
+        // Configuración del servicio de correo
+       
+        
+        // Contenido del correo
+        // let mailOptions = {
+        //   from: "gleismerco13@hotmail.com",
+        //   to: email, // Correo del usuario que envía la solicitud
+        //   subject: "Nueva solicitud",
+        //   text: `Has recibido una nueva solicitud con el siguiente mensaje: ${solicitud.message}`,
+        // };
+        // const mailOptions = {
+        //   from: user.email,
+        //   to: process.env.EMAIL_PHONEZONE,
+        //   subject: 'New message from contact form',
+        //   html: `
+        //     <p>Full name: ${user.name}</p>
+        //     <p>Email: ${user.email}</p>
+        //     <p>Message: ${user.message}</p>
+        //   `,
+        // };
+        // Enviar el correo electrónico
+        // transporter.sendMail(mailOptions, (error, info) => {
+        //   if (error) {
+        //     console.log(error);
+        //   } else {
+        //     console.log("Email sent: " + info.response);
+        //   }
+        // });
+  
+        res.status(200).json({ message: "Solicitud guardada" });
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Ocurrió un error al procesar su solicitud." });
+    }
+  });
 
-        await solicitud.setUser(user)
-        res.status(200).json({ message: "solicitud guardada"})
-      }
+  // router.post("/request", async (req, res) => {
+  //   const { email, name, message } = req.body;
+  
+  //   try {
+  //     const user = await User.findOne({ where: { email: email, name: name } });
+  
+  //     if (!user) {
+  //       return res
+  //         .status(404)
+  //         .json({ message: "Not user found with that email." });
+  //     }
+  //     else{
+  //       const solicitud= await Request.create({
+  //           message
+  //       })
+
+  //       await solicitud.setUser(user)
+  //       res.status(200).json({ message: "solicitud guardada"})
+  //     }
      
   
       
-    } catch (err) {
-      console.error(err);
-      res
-        .status(500)
-        .json({ message: "Ocurrió un error al procesar su solicitud." });
-    }
-  });
+  //   } catch (err) {
+  //     console.error(err);
+  //     res
+  //       .status(500)
+  //       .json({ message: "Ocurrió un error al procesar su solicitud." });
+  //   }
+  // });
 
 
   router.put("/banned/:id", async (req, res) => {
@@ -283,6 +349,26 @@ router.post("/login", async (req, res) => {
       res.status(200).send(selectedUser);
     } else {
       res.sendStatus(404);
+    }
+  });
+
+
+  router.put("/admin/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const users = await User.findOne({
+        where: { id: id },
+      });
+  
+      if (users.rol === "user") {
+        await User.update({ rol: "admin" }, { where: { id: id } });
+        res.send("updated user to admin");
+      } else {
+        await User.update({ rol: "user" }, { where: { id: id } });
+        res.send("you have become a user");
+      }
+    } catch (err) {
+      console.log(err);
     }
   });
   

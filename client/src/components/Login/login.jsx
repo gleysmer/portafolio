@@ -1,9 +1,10 @@
 import { useState } from "react";
 import Headers from "../header/Headers";
+import Swal from "sweetalert2";
 // import { BsEyeSlash } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 
-import './styles.css'
+import style from './Login.module.css'
 
 
 export default function Login(){
@@ -46,65 +47,87 @@ export default function Login(){
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    if(validateForm() !== 0){
-      alert("TIENES ERRORES");
-    }
-    
-    else {
+  
+    if ( validateForm() !== 0) {
+      alert("email or password invalid");
+    } else {
       try {
         const response = await fetch("http://localhost:3001/user/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            
-            ...user
-          }),
+          body: JSON.stringify({...user}),
         });
-  
+       
         const data = await response.json();
-  
-        if (!response.ok) {
+        
+        const dato = {
+          data_user: data.data.dataValues,
+          token: data.data.token,
+        };
+        window.localStorage.setItem('user-log', JSON.stringify(dato));
+        
+
+
+        // console.log("datos", dato)
+        if (response.status === 401) { // Verificar si el usuario no existe o la contraseña es incorrecta
+          setLoginError("Email or Password is invalid");
+          
+          return ;
+        }
+        if (!data) {
           throw new Error(data.message || "Something went wrong");
         }
-  
-        setUser("");
-        setControl("")
-        setSeePassword(false)
-        setLoginError("")
+        else if(data.data.dataValues.rol === "admin"){
+          // Swal.fire({
+          //   icon: "success",
+          //   title: "Congratulations!",
+          //   text: response.data.message,
+          //   confirmButtonText: "Continue",
+          // });
+          navigate("/dashboard");
+        }
+        else {
+          setUser("");
+          setControl("");
+          setSeePassword(false);
+          setLoginError("");
+          navigate('/home');
+        }
       } catch (err) {
-        setErrors(err.message || "Something went wrong");
-      }
-
-      navigate('/home')
-  }
+        if (err.message === "User does not exist" || err.message === "Invalid password") {
+          setLoginError(err);
+        } else {
+          setErrors(err.message || "Something went wrong");
+        }
+    }
+  };
 }
 
   return (
-    <div className="container">
+    <div className={style.container}>
       <Headers />
-      <div className="conte-comple">
-      <div className="logii">
-        <div className="bien">
-          <h3 className="bienvenido" >welcome</h3>
-          <h5 className="init">Login and Enjoy</h5>
+      <div className={style.conte_comple}>
+      <div className={style.logii}>
+        <div className={style.bien}>
+          <h3 className={style.bienvenido} >welcome</h3>
+          <h5 className={style.init}>Login and Enjoy</h5>
       </div>
       </div>
-    <div className="form-conte">
+    <div className={style.form_conte}>
       
 
-        <div className="tituloH">
-          <h1 className="titulo">
+        <div className={style.tituloH}>
+          <h1 className={style.titulo}>
             Login to your account
           </h1>
         </div>
         <div >
-          <form onSubmit={handleSubmit} className="form" >
+          <form onSubmit={handleSubmit} className={style.form} >
           <div>
-          <div className="div-email">
-              <label className="label">
+          <div className={style.div_email}>
+              <label className={style.label}>
                 email
               </label>
             </div>
@@ -116,17 +139,18 @@ export default function Login(){
               name="email"
               value={user.email}
               autoComplete="off"
-              className="input"
+              className={style.input}
             />
-            <p className="">{loginError}</p>
+           {errors.email && <p className={style.error}>{errors.email}</p>}
+            
             </div>
-            <div className="div-pass">
-              <label className="label">
+            <div className={style.div_pass}>
+              <label className={style.label}>
                 Password
               </label>
             </div>
 
-            <div className="pass">
+            <div className={style.pass}>
               <div>
               <input
                 onChange={handleUser}
@@ -135,26 +159,26 @@ export default function Login(){
                 name="password"
                 value={user.password}
                 autoComplete="off"
-                className="input"
-              />
-              </div>
-              
-              
+                className={style.input}
+              />  
+            </div>
             </div>
 
             <button
               type="submit"
-              className="btn-login"
+              className={style.btn_login}
             >
               LOGIN
             </button>
+            {loginError && <p className="error">{loginError}</p>}
+            
             <p className="">{control}</p>
           </form>
 
           </div>
           
-          <div>      
-          <p className="registro">
+          <div className={style.divv}>      
+          <p className={style.registro}>
             Don't have an account?{" "}
             <Link
               to={"/register"}
@@ -165,7 +189,7 @@ export default function Login(){
           </p>
           <Link
             to={"/passwordReset"}
-            className="cambio"
+            className={style.cambio}
           >
             I forgot my password
           </Link>

@@ -1,12 +1,20 @@
 import React, { useState } from 'react'
 import styled from 'styled-components';
 import { GiCandleFlame } from "react-icons/gi";
-
+import {  AiOutlinePoweroff } from "react-icons/ai";
 
 import { Link } from 'react-router-dom';
 
 const Header = () => {
     const [bar, setBar] = useState(false);
+   
+        const datos = window.localStorage.getItem("user-log");
+        const Value = JSON.parse(datos)?.data_user;
+    // console.log("value", Value)
+
+
+    const handleLogout = () => { localStorage.clear(); window.location.reload(); };
+    
   return (
     <Container bar={bar}>
         <Logo>
@@ -16,10 +24,12 @@ const Header = () => {
         </Logo>
         <Nav bar={bar}>
             <span><a href="#home">Home</a></span>
-            <span><a href="#service">Services</a></span>
+            <span><a href="#service">Skill</a></span>
             <span><a href="#project">Projects</a></span>
             <span><a href="#footer">requests</a></span>
-            <span><Link to={'/'}>login</Link> </span>
+
+            {!Value ?  (<span><Link to={'/'}>login</Link> </span>): <span>{Value.name} <button onClick={handleLogout}><AiOutlinePoweroff /></button></span> }
+           
             
             
         </Nav>
@@ -106,11 +116,11 @@ const Nav = styled.div`
         display: flex;
         flex-direction: column;
         background-color: #01be96;
-        inset: 0;
+         inset: 0;
         justify-content: center;
         align-items: center;
         font-size: 2rem;
-        gap: 2rem;
+        gap: 1rem;
         font-weight: 700;
         height: ${props => props.bar ? "100vh" : 0};
         transition: height 400ms ease-in-out;
@@ -118,12 +128,39 @@ const Nav = styled.div`
         z-index: 100;
     }
     span{
-        margin-left: 1rem;
+        margin-left: 3rem;
         a{
             color: #fff;
             text-decoration: none;
             font-weight: 400;
             position: relative;
+            :before{
+                content: "";
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: -5px;
+                height: 2px;
+                background-color: #fff;
+                transform: scale(0);
+                transform-origin: right;
+                transition: transform 400ms ease-in-out;
+            }
+            :hover:before{
+                transform: scale(1);
+                transform-origin: left;
+            }
+            :hover{
+                opacity: 0.7;
+            }
+        }
+        button{
+            color: #fff;
+            text-decoration: none;
+            font-weight: 400;
+            position: relative;
+            margin-left: 25px;
+            height: 40px;
             :before{
                 content: "";
                 position: absolute;

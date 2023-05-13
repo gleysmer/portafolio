@@ -26,7 +26,6 @@ const { DataTypes } = require('sequelize');
       unique: true
     },
     
-
     rol: {
       type: DataTypes.ENUM('admin', 'user'),
       allowNull: false,
